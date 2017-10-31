@@ -18,7 +18,7 @@ class UserRegistration(Resource):
             response.status = "409"
             response.response = json.dumps({
                 "code": "USER_ALREADY_EXISTS",
-                "desctioption": "A user with specified username already exists"
+                "description": "A user with specified username already exists"
             })
         except JSONDecodeError:
             response.status = "400"
