@@ -48,6 +48,14 @@ class CRUDTestSuite(unittest.TestCase):
 
     def test_successful_user_creation_returns_user_object(self):
         response = self.post(self.user_dummy_json)
+        
+        data = json.loads(response.data.decode())
+        assert data == {
+            "id": 0,
+            "firstName": "John",
+            "lastName": "Cleese",
+            "userName": "lancelot",
+        }
 
 
     def test_username_collision_returns_an_error(self):
@@ -64,6 +72,9 @@ class CRUDTestSuite(unittest.TestCase):
     def test_invalid_json_returns_an_error(self):
         client_json = '{"user'
         response = self.post(client_json)
+
+        assert response.status_code == 400
+
         data = json.loads(response.data.decode())
         assert data["code"] == "INVALID_JSON"
 
@@ -72,6 +83,9 @@ class CRUDTestSuite(unittest.TestCase):
                 "userName": "lancelot"
         })
         response = self.post(client_json)
+
+        assert response.status_code == 400
+
         data = json.loads(response.data.decode())
         assert data["code"] == "INVALID_JSON_DATA"
 
